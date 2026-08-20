@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Construtora Fowles</title>
+
+  <!-- Link para o CSS externo atualizado -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Estilos embutidos mantidos e ajustados -->
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 0; 
+      padding-top: 80px; 
+      background: #f9f9f9; 
+    }
+
+    nav {
+      position: fixed; 
+      top: 0; 
+      width: 100%;
+      height: 80px; 
+      background: #1e1e1e; 
+      color: white;
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      padding: 0 30px; 
+      z-index: 1000; 
+      box-sizing: border-box;
+    }
+
+    .logo-menu {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-menu img { 
+      height: 60px; 
+    }
+
+    .menu-toggle {
+      display: none; /* Escondido em telas grandes */
+      font-size: 2em;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .menu {
+      display: flex;
+      gap: 15px;
+      flex-grow: 1;
+      justify-content: center;
+      transition: max-height 0.3s ease;
+    }
+
+    .menu a {
+      color: white; 
+      text-decoration: none; 
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    #content {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    footer {
+      background: #111; 
+      color: #bbb; 
+      text-align: center;
+      padding: 30px; 
+      margin-top: 50px;
+    }
+
+    footer .logo-footer img { 
+      height: 100px; 
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+      .menu {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 80px;
+        width: 100%;
+        background-color: #1e1e1e;
+        padding: 20px;
+        box-sizing: border-box;
+        z-index: 999;
+      }
+
+      .menu.open {
+        display: flex;
+      }
+
+      .menu a {
+        padding: 10px 0;
+        text-align: center;
+        width: 100%;
+      }
+
+      .menu-toggle {
+        display: block; /* Mostra o ícone hambúrguer */
+      }
+
+      .logo-menu {
+        justify-content: space-between;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="logo-menu">
+    <img src="logo.png" alt="Logo Menu">
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  </div>
+
+  <div class="menu" id="menu">
+    <a href="#/">Início</a>
+    <a href="#/portfolio">Portfólio</a>
+    <a href="#/orcamento">Orçamento</a>
+    <a href="#/quemsomos">Quem Somos</a>
+    <a href="#/servicos">Serviços</a>
+    <a href="#/mapa">Localização</a>
+  </div>
+</nav>
+
+<!-- CONTEÚDO PRINCIPAL -->
+<div id="content">Carregando...</div>
+
+<!-- RODAPÉ -->
+<footer>
+  <div class="logo-footer">
+    <img src="logo.png" alt="Logo Rodapé">
+  </div>
+  <p>&copy; 2025 Construtora Fowles. Todos os direitos reservados.</p>
+  <p>CNPJ: 46.820.762/0001-35 | jonathanfowles@gmail.com</p>
+  <p>CREA: 021514987-4 AL</p>
+</footer>
+
+<!-- SCRIPT RESPONSIVO -->
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById("menu");
+    menu.classList.toggle("open");
+  }
+
+  const routes = {
+    '/': 'components/home.html',
+    '/portfolio': 'components/portfolio.html',
+    '/orcamento': 'components/orcamento.html',
+    '/quemsomos': 'components/quemsomos.html',
+    '/servicos': 'components/servicos.html',
+    '/mapa': 'components/mapa.html'
+  };
+
+  async function loadContent(route) {
+    const file = routes[route] || routes['/'];
+    const content = document.getElementById('content');
+    content.style.opacity = 0;
+    const res = await fetch(file);
+    const html = await res.text();
+    setTimeout(() => {
+      content.innerHTML = html;
+      content.style.opacity = 1;
+      // <script> injetado via innerHTML não executa sozinho no navegador —
+      // recria cada tag pra rodar de verdade (necessário pro formulário de
+      // orçamento e pra qualquer outro script embutido nos componentes).
+      content.querySelectorAll('script').forEach((oldScript) => {
+        const newScript = document.createElement('script');
+        for (const attr of oldScript.attributes) newScript.setAttribute(attr.name, attr.value);
+        newScript.textContent = oldScript.textContent;
+        oldScript.replaceWith(newScript);
+      });
+    }, 200);
+  }
+
+  function router() {
+    const hash = location.hash.slice(1) || '/';
+    loadContent(hash);
+  }
+
+  window.addEventListener('hashchange', router);
+  window.addEventListener('load', router);
+</script>
+
+</body>
+</html>

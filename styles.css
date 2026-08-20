@@ -1,0 +1,154 @@
+/* ===============================
+   ESTILOS GERAIS DO SITE
+   =============================== */
+
+   body, html {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 80px;
+    background-color: #1e1e1e;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 1000;
+  }
+  
+  .menu {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+  }
+  
+  .logo-menu img {
+    height: 50px;
+  }
+  
+  .menu-toggle {
+    display: none; /* Escondido em telas grandes */
+    font-size: 2em;
+    cursor: pointer;
+    color: #fff;
+  }
+  
+  #content {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 100px auto 0 auto;
+  }
+  
+  footer {
+    background-color: #111;
+    color: #bbb;
+    text-align: center;
+    padding: 30px;
+    margin-top: 50px;
+  }
+  
+  .logo-footer img {
+    height: 80px;
+  }
+  
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+  
+  .gallery-grid img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    padding: calc(1vw / 10);
+    border: 1px solid #000;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+  }
+  
+  /* ===============================
+     RESPONSIVIDADE - TABLETS E SMARTPHONES
+     =============================== */
+  
+  /* Tablets (até 1024px) */
+  @media (max-width: 1024px) {
+    .menu {
+      gap: 10px;
+    }
+  
+    .gallery-grid {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+  
+    .gallery-grid img {
+      height: 120px;
+    }
+  }
+  
+  /* Smartphones grandes (até 768px) */
+  @media (max-width: 768px) {
+    .menu {
+      display: none; /* Esconde o menu em telas menores */
+      flex-direction: column;
+      gap: 10px;
+      background-color: #1e1e1e;
+      position: absolute;
+      top: 80px;
+      width: 100%;
+      padding: 20px;
+    }
+  
+    .menu.open {
+      display: flex;
+    }
+  
+    .menu-toggle {
+      display: block; /* Mostra o ícone hambúrguer */
+    }
+  
+    .logo-menu {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+    }
+  
+    .gallery-grid {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+  
+    .gallery-grid img {
+      height: 100px;
+    }
+  }
+  
+  /* Smartphones pequenos (até 480px) */
+  @media (max-width: 480px) {
+    .menu a {
+      font-size: 0.9em;
+    }
+  
+    .gallery-grid {
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    }
+  
+    .gallery-grid img {
+      height: 80px;
+    }
+  }
+  

@@ -1,0 +1,56 @@
+<h2>Solicitação de Orçamento</h2>
+<form id="orcamentoForm" style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 600px; margin: auto;">
+
+  <label>Nome:</label>
+  <input type="text" name="nome" required style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+
+  <label>Local da obra:</label>
+  <input type="text" name="local" required style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+
+  <label>Preferência de contato:</label>
+  <select name="preferencia" required style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+    <option value="whatsapp">WhatsApp</option>
+    <option value="email">E-mail</option>
+    <option value="ligacao">Ligação</option>
+  </select>
+
+  <label>WhatsApp:</label>
+  <input type="text" name="whatsapp" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+
+  <label>E-mail:</label>
+  <input type="email" name="email" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+
+  <label>Arquivo (PDF ou DWG):</label>
+  <input type="file" name="arquivo" accept=".pdf,.dwg" required style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+
+  <button type="submit" id="orcamentoBtn" style="padding: 12px; background-color: #1e1e1e; color: #fff; border: none; border-radius: 5px; cursor: pointer;">Enviar</button>
+  <div id="orcamentoMsg"></div>
+</form>
+
+<script>
+  (function () {
+    const form = document.getElementById('orcamentoForm');
+    const btn = document.getElementById('orcamentoBtn');
+    const msg = document.getElementById('orcamentoMsg');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+      msg.textContent = '';
+      try {
+        const res = await fetch('/api/orcamento', { method: 'POST', body: new FormData(form) });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Erro ao enviar.');
+        msg.style.color = '#2e9e4f';
+        msg.textContent = 'Pedido enviado com sucesso! Entraremos em contato em breve.';
+        form.reset();
+      } catch (err) {
+        msg.style.color = '#c74b4b';
+        msg.textContent = err.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Enviar';
+      }
+    });
+  })();
+</script>
